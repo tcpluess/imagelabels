@@ -1,0 +1,15 @@
+\documentclass{standalone}
+\usepackage{imagelabels}
+
+% turn the help grid on or off.
+% the grid is of great help when positioning the labels.
+% \helpgrid
+
+\begin{document}
+  \begin{annotationimage}{width=7cm}{jupiter.jpg}
+    \draw[circular arrow=1cm] (0.71,0.33) -- (1.1,0.4) node[right] {great red spot};
+
+    \markingcircle{7mm}{0.4,0.4}
+    \imagelabel{Jupiter}
+   \end{annotationimage}
+\end{document}

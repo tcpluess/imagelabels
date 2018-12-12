@@ -136,3 +136,5 @@ sympy-plots-for-*.tex/
 *.bak
 *.sav
 
+*.pdf
+samples/*/figure.png

@@ -1,0 +1,168 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{imagelabels}[2016/04/08 TikZ image labels]
+
+\RequirePackage{tikz}
+
+% use a nicer sans-serif font
+\RequirePackage{helvet}
+
+\frenchspacing
+
+\RequirePackage[protrusion=true,expansion=true,activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true]{microtype}
+\SetTracking{encoding={*}, shape=sc}{10}
+
+\usetikzlibrary{automata,%
+arrows.meta,%
+calc,%
+intersections,%
+matrix,%
+patterns,%
+positioning,%
+shapes,%
+decorations,%
+decorations.markings,%
+math,%
+shapes.multipart}
+
+%%% TikZ STUFF
+
+\newdimen\markingarrowlength
+\markingarrowlength = 0.8cm
+
+\newdimen\markingarrowdistance
+\markingarrowdistance = 0.1cm
+
+\newdimen\circlesize
+\circlesize = 0.3cm
+
+% if this command is present, the help grid will be shown
+\newcommand{\helpgrid}{\def\helpgridon{}}
+
+% annotated image with grid
+% \begin{annotationimagegrid}{width=1cm}{pic.jpg}
+\newenvironment{annotationimage}[2]{%
+  \small
+  \begin{tikzpicture}
+  \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[#1]{#2}};
+  \begin{scope}[x={(image.south east)},y={(image.north west)}]
+  \ifdefined\helpgridon
+    \draw[help lines, very thin, step=0.02] (0,0) grid (1,1);
+    \draw[help lines, very thin, red, thin,xstep=.1,ystep=.1] (0,0) grid (1,1);
+    \foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {\tiny 0.\x}; }
+    \foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {\tiny 0.\y}; }
+  \else
+  \fi
+}{%
+ \end{scope}
+ \end{tikzpicture}}
+
+
+% arrows for marking certain points in photographs.
+% usage: \marking{x pos}{y pos}{angle}
+% gives an arrow of length 0.8cm at the desired angle, pointing towards the
+% given coordinate
+\def\marking#1#2#3{% x y angle
+  \draw[double arrow = 0.6mm colored by white and black] ([xshift={\markingarrowlength*cos(#3)}, yshift={\markingarrowlength*sin(#3)}] #1, #2) -- (#1, #2);
+}
+
+\newcommand{\labelleft}[3]{%
+\draw[annotation arrow] (-0.1,#3) node[left] {\strut{} #2} -- (#1);
+}
+
+\newcommand{\labelabove}[3]{%
+\draw[annotation arrow] (#3,1.1) node[above] {#2\strut{}} -- (#1);
+}
+
+\newcommand{\labelbelow}[3]{%
+\draw[annotation arrow] (#3,-0.1) node[below] {#2\strut{}} -- (#1);
+}
+
+\newcommand{\labelright}[3]{%
+\draw[annotation arrow] (1.1,#3) node[right] {#2\strut{}} -- (#1);
+}
+
+\newcommand{\imagelabel}[1]{%
+\node[image label] at (image.south east) {#1};
+}
+
+\newcommand{\markingcircle}[2]{%
+\node[marking circle = #1] at (#2) {};
+}
+
+% tikz styles for annotations.
+\tikzset{
+  > = latex,
+  % these are the arrows with the black dot at the end.
+  annotation arrow/.style =
+  {
+    -{Circle[fill=black, length=1.5mm,  width=1.5mm]},
+    line width = 0.6mm,
+    white,
+    shorten >= (-0.75mm + 1mm),
+    postaction =
+    {
+      draw,
+      -{Circle[fill=black, length=1.1mm, width=1.1mm]},
+      black,
+      line width = 0.2mm,
+      shorten >= (-0.75mm + 0.2mm + 1mm)
+    },
+    text = black
+  },
+  % arrows with a small circle at the end.
+  circular arrow/.style args = {#1}{
+    {Circle[open,width=#1,length=#1]}-,
+    white,
+    shorten <=-#1/2,
+    line width = 0.6mm,
+    postaction={
+      draw,
+      {Circle[open,width=#1-0.4mm,length=#1-0.4mm]}-,
+      black,
+      line width = 0.2mm,
+      shorten <=-(#1-0.4mm)/2,
+      % shorten >=4.5*(#1)/3
+    },
+    text = black
+  },
+  double arrow/.style args={#1 colored by #2 and #3}{
+    -latex,
+    line width=#1,
+    #2,
+    shorten >= 0.5mm,
+    postaction={
+      draw,
+      -latex,
+      #3,
+      line width=(#1)/3,
+      shorten <=(#1)/4,
+      shorten >=4.5*(#1)/3+0.5mm
+    }
+  },
+  marking circle/.style args = {#1}{
+    circle,
+    minimum size = #1,
+    inner sep = 0pt,
+    line width = 0.6mm,
+    draw=white,
+    postaction =
+    {
+      draw,
+      black,
+      line width = 0.2mm,
+    },
+    text = black
+  },
+  image label/.style =
+  {
+    rectangle,
+    minimum width = 5mm,
+    minimum height = 5mm,
+    fill = black,
+    text = white,
+    font = \bfseries\sffamily,
+    anchor = south east,
+    xshift = -0.2cm,
+    yshift = 0.2cm
+  }
+}
