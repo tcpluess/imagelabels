@@ -66,7 +66,7 @@ shapes.multipart}
 }
 
 \newcommand{\labelleft}[3]{%
-\draw[annotation arrow] (-0.1,#3) node[left] {\strut{} #2} -- (#1);
+\draw[annotation arrow] (-0.1,#3) node[left] {#2} -- (#1);
 }
 
 \newcommand{\labelabove}[3]{%
@@ -78,7 +78,7 @@ shapes.multipart}
 }
 
 \newcommand{\labelright}[3]{%
-\draw[annotation arrow] (1.1,#3) node[right] {#2\strut{}} -- (#1);
+\draw[annotation arrow] (1.1,#3) node[right] {#2} -- (#1);
 }
 
 \newcommand{\imagelabel}[1]{%
@@ -99,6 +99,7 @@ shapes.multipart}
     line width = 0.6mm,
     white,
     shorten >= (-0.75mm + 1mm),
+    inner sep = 0.3ex,
     postaction =
     {
       draw,
@@ -115,6 +116,7 @@ shapes.multipart}
     white,
     shorten <=-#1/2,
     line width = 0.6mm,
+    inner sep = 0.3ex,
     postaction={
       draw,
       {Circle[open,width=#1-0.4mm,length=#1-0.4mm]}-,
@@ -145,6 +147,7 @@ shapes.multipart}
     inner sep = 0pt,
     line width = 0.6mm,
     draw=white,
+    inner sep = 0.3ex,
     postaction =
     {
       draw,
