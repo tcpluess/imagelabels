@@ -1,3 +1,6 @@
+% TikZ image labels package
+% (C) 2018 Tobias Plüss <tobias.pluess@iap.unibe.ch>
+
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{imagelabels}[2016/04/08 TikZ image labels]
 
@@ -24,16 +27,11 @@ decorations.markings,%
 math,%
 shapes.multipart}
 
-%%% TikZ STUFF
-
 \newdimen\markingarrowlength
 \markingarrowlength = 0.8cm
 
 \newdimen\markingarrowdistance
 \markingarrowdistance = 0.1cm
-
-\newdimen\circlesize
-\circlesize = 0.3cm
 
 % if this command is present, the help grid will be shown
 \newcommand{\helpgrid}{\def\helpgridon{}}
